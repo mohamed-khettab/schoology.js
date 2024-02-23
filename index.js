@@ -2,16 +2,29 @@ const axios = require("axios");
 const OAuth1 = require("oauth-1.0a");
 const crypto = require("crypto");
 
+/**
+ * Schoology API Client for making authenticated requests.
+ */
 class SchoologyClient {
+  /**
+   * Creates an instance of SchoologyClient.
+   * @param {string} key - The API key.
+   * @param {string} secret - The API secret.
+   */
   constructor(key, secret) {
+    // Check if key and secret are provided
     if (!key || !secret) {
       throw new Error(
         "Key and secret are required to create an instance of SchoologyClient."
       );
     }
+
+    // Initialize key, secret, and base URL
     this.key = key;
     this.secret = secret;
-    this.baseURL = "https://api.schoology.com/v1/";
+    this.baseURL = "https://api.schoology.com/v1";
+
+    // Initialize OAuth1 instance
     this.oauth = OAuth1({
       consumer: {
         key: this.key,
@@ -27,132 +40,39 @@ class SchoologyClient {
     });
   }
 
-  async fetchData(url, method, data = null) {
+  /**
+   * Makes a request to the Schoology API.
+   * @param {string} endpoint - The API endpoint.
+   * @param {string} method - The HTTP method (GET, POST, PUT, DELETE, etc.).
+   * @param {object|null} data - The data to be sent with the request (for POST or PUT).
+   * @param {object} params - The query parameters.
+   * @returns {Promise<object>} The response data from the API.
+   * @throws {Error} If there's an error processing the request.
+   */
+  async makeRequest(endpoint, method, data = null, params = {}) {
     try {
+      const url = `${this.baseURL}${endpoint}`;
+
+      // Construct request data
       const requestData = {
-        url: url,
-        method: method,
-        data: data,
+        url,
+        method,
+        data,
+        params,
       };
+
+      // Generate OAuth headers
       const headers = this.oauth.toHeader(this.oauth.authorize(requestData));
-      const response = await axios({ method, url, data, headers });
+
+      // Make request using axios
+      const response = await axios({ method, url, data, params, headers });
+
       return response.data;
     } catch (error) {
-      const errorMessage = `Error while processing request to ${url}: ${error.message}`;
+      const errorMessage = `Error while processing request: ${error.message}`;
       console.error(errorMessage);
       throw new Error(errorMessage);
     }
-  }
-
-  async getSchools() {
-    const url = `${this.baseURL}schools`;
-    return this.fetchData(url, "GET");
-  }
-
-  async getSchool(schoolId) {
-    if (!schoolId) {
-      throw new Error("Cannot get school without school ID.");
-    }
-    const url = `${this.baseURL}schools/${schoolId}`;
-    return this.fetchData(url, "GET");
-  }
-
-  async createSchool(schoolData) {
-    if (!schoolData) {
-      throw new Error("Cannot create school without school data.");
-    }
-    const url = `${this.baseURL}schools`;
-    return this.fetchData(url, "POST", schoolData);
-  }
-
-  async editSchool(schoolId, schoolData) {
-    if (!schoolId || !schoolData) {
-      throw new Error("Cannot edit school without school ID and data.");
-    }
-    const url = `${this.baseURL}schools/${schoolId}`;
-    return this.fetchData(url, "PUT", schoolData);
-  }
-
-  async deleteSchool(schoolId) {
-    if (!schoolId) {
-      throw new Error("Cannot delete school without school ID.");
-    }
-    const url = `${this.baseURL}schools/${schoolId}`;
-    return this.fetchData(url, "DELETE");
-  }
-
-  async getBuildings(schoolId) {
-    if (!schoolId) {
-      throw new Error("Cannot get buildings without school ID.");
-    }
-    const url = `${this.baseURL}schools/${schoolId}/buildings`;
-    return this.fetchData(url, "GET");
-  }
-
-  async getBuilding(schoolId, buildingId) {
-    if (!schoolId || !buildingId) {
-      throw new Error("Cannot get building without school ID and building ID.");
-    }
-    const url = `${this.baseURL}schools/${schoolId}/buildings/${buildingId}`;
-    return this.fetchData(url, "GET");
-  }
-
-  async createBuilding(schoolId, buildingData) {
-    if (!schoolId || !buildingData) {
-      throw new Error("Cannot create building without school ID and data.");
-    }
-    const url = `${this.baseURL}schools/${schoolId}/buildings`;
-    return this.fetchData(url, "POST", buildingData);
-  }
-
-  async createUser(userData) {
-    if (!userData) {
-      throw new Error("Cannot create user without user data.");
-    }
-    const url = `${this.baseURL}users`;
-    return this.fetchData(url, "POST", userData);
-  }
-
-  async getUsers() {
-    const url = `${this.baseURL}users`;
-    return this.fetchData(url, "GET");
-  }
-
-  async getInactiveUsers() {
-    const url = `${this.baseURL}users/inactive`;
-    return this.fetchData(url, "GET");
-  }
-
-  async getUser(userId) {
-    if (!userId) {
-      throw new Error("Cannot get user without user ID.");
-    }
-    const url = `${this.baseURL}users/${userId}`;
-    return this.fetchData(url, "GET");
-  }
-
-  async getInactiveUser(userId) {
-    if (!userId) {
-      throw new Error("Cannot get inactive user without user ID.");
-    }
-    const url = `${this.baseURL}users/inactive/${userId}`;
-    return this.fetchData(url, "GET");
-  }
-
-  async updateUser(userId, userData) {
-    if (!userId || !userData) {
-      throw new Error("Cannot update user without user ID and data.");
-    }
-    const url = `${this.baseURL}users/${userId}`;
-    return this.fetchData(url, "PUT", userData);
-  }
-
-  async deleteUser(userId) {
-    if (!userId) {
-      throw new Error("Cannot delete user without user ID.");
-    }
-    const url = `${this.baseURL}users/${userId}`;
-    return this.fetchData(url, "DELETE");
   }
 }
 

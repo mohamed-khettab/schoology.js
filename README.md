@@ -1,108 +1,94 @@
-# SchoologyClient Class
+# schoology.js
+
+## Introduction
+
+schoology.js is a Node.js library for interacting with the Schoology API. It allows developers to authenticate with Schoology and make requests to various API endpoints.
+
+## Installation
+
+You can install the package via npm:
+
+`npm install schoology.js`
+
+## Get Started
+
+```
+const SchoologyClient = require("schoology.js");
+
+// Replace "your_key" and "your_secret" with your actual key and secret. 
+// Obtain your key and secret by visiting https://[district_name].schoology.com/api
+const client = new SchoologyClient("your_key", "your_secret");
+
+// Example usage:
+async function exampleUsage() {
+  try {
+    // Fetching a list of schools
+    const schools = await client.makeRequest("schools", "GET");
+    console.log("Schools:", schools);
+    
+    // Fetching a specific school by its ID
+    const schoolId = 123; // Replace 123 with an actual school ID
+    const school = await client.makeRequest(`schools/${schoolId}`, "GET");
+    console.log(`School with ID ${schoolId}:`, school);
+    
+    // Creating a new school
+    const newSchoolData = { name: "New School", location: "Somewhere" };
+    const createdSchool = await client.makeRequest("schools", "POST", newSchoolData);
+    console.log("Created School:", createdSchool);
+    
+    // Fetching buildings of a specific school
+    const buildings = await client.makeRequest(`schools/${schoolId}/buildings`, "GET");
+    console.log(`Buildings for school with ID ${schoolId}:`, buildings);
+    
+    // Fetching users
+    const users = await client.makeRequest("users", "GET");
+    console.log("Users:", users);
+    
+    // Creating a new user
+    const newUser = { name: "John Doe", email: "john@example.com" };
+    const createdUser = await client.makeRequest("users", "POST", newUser);
+    console.log("Created User:", createdUser);
+    
+    // Fetching groups
+    const groups = await client.makeRequest("groups", "GET");
+    console.log("Groups:", groups);
+    
+    // Fetching group categories
+    const groupCategories = await client.makeRequest("groups/categories", "GET");
+    console.log("Group Categories:", groupCategories);
+    
+    // Fetching courses
+    const courses = await client.makeRequest("courses", "GET");
+    console.log("Courses:", courses);
+    
+    // Add more API calls as needed...
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+exampleUsage();
+
+```
+
+For more examples and details, see the  [API documentation]("https://developers.schoology.com/api-documentation/rest-api-v1/")
 
 ## Constructor
 
-### `constructor(key: string, secret: string)`
+### `new SchoologyClient(key, secret)`
 
-Creates an instance of the SchoologyClient.
+Creates a new instance of the SchoologyClient.
 
-- `key`: API key for Schoology authentication.
-- `secret`: API secret for Schoology authentication.
-
-Throws an error if `key` or `secret` is missing.
+- `key` (string): The API key provided by Schoology.
+- `secret` (string): The API secret provided by Schoology.
 
 ## Methods
 
-### `getSchools(): Promise<any>`
+### `makeRequest(endpoint, method, data = null, params = {})`
 
-Fetches a list of all schools.
+Make a request to the Schoology API.
 
-### `getSchool(schoolId: string): Promise<any>`
-
-Fetches information about a specific school.
-
-- `schoolId`: ID of the school to fetch information about.
-
-### `createSchool(schoolData: object): Promise<any>`
-
-Creates a new school.
-
-- `schoolData`: Data for creating the school.
-
-### `editSchool(schoolId: string, schoolData: object): Promise<any>`
-
-Edits an existing school.
-
-- `schoolId`: ID of the school to edit.
-- `schoolData`: Updated data for the school.
-
-### `deleteSchool(schoolId: string): Promise<any>`
-
-Deletes a school.
-
-- `schoolId`: ID of the school to delete.
-
-### `getBuildings(schoolId: string): Promise<any>`
-
-Fetches a list of buildings for a specific school.
-
-- `schoolId`: ID of the school whose buildings are to be fetched.
-
-### `getBuilding(schoolId: string, buildingId: string): Promise<any>`
-
-Fetches information about a specific building in a school.
-
-- `schoolId`: ID of the school to which the building belongs.
-- `buildingId`: ID of the building to fetch information about.
-
-### `createBuilding(schoolId: string, buildingData: object): Promise<any>`
-
-Creates a new building for a specific school.
-
-- `schoolId`: ID of the school to which the building will be added.
-- `buildingData`: Data for creating the building.
-
-### `createUser(userData: object): Promise<any>`
-
-Creates a new user.
-
-- `userData`: Data for creating the user.
-
-### `getUsers(): Promise<any>`
-
-Fetches a list of all users.
-
-### `getInactiveUsers(): Promise<any>`
-
-Fetches a list of inactive users.
-
-### `getUser(userId: string): Promise<any>`
-
-Fetches information about a specific user.
-
-- `userId`: ID of the user to fetch information about.
-
-### `getInactiveUser(userId: string): Promise<any>`
-
-Fetches information about a specific inactive user.
-
-- `userId`: ID of the inactive user to fetch information about.
-
-### `updateUser(userId: string, userData: object): Promise<any>`
-
-Updates information about a specific user.
-
-- `userId`: ID of the user to update.
-- `userData`: Updated data for the user.
-
-### `deleteUser(userId: string): Promise<any>`
-
-Deletes a user.
-
-- `userId`: ID of the user to delete.
-
-## To Do
-
-### The rest of the API lol!!!!!
-
-- [ ] Finish adding all of the methods from the schoology API :,(
+- `endpoint` (string): The API endpoint.
+- `method` (string): The HTTP method (GET, POST, PUT, DELETE, etc.).
+- `data` (object|null): The data to be sent with the request (for POST or PUT).
+- `params` (object): The query parameters.
