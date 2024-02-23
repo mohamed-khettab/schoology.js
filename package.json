@@ -1,7 +1,7 @@
 {
   "name": "schoology.js",
-  "version": "1.0.3",
-  "description": "Node wrapper for Schoology API",
+  "version": "1.0.4",
+  "description": "Easily make requests to the Schoology API.",
   "main": "index.js",
   "dependencies": {
     "asynckit": "^0.4.0",
