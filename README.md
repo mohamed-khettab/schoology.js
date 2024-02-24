@@ -71,7 +71,7 @@ exampleUsage();
 
 ```
 
-For more examples and details, see the  [API documentation]("https://developers.schoology.com/api-documentation/rest-api-v1/")
+For more examples and details, see the  [API documentation](https://developers.schoology.com/api-documentation/rest-api-v1/)
 
 ## Constructor
 
