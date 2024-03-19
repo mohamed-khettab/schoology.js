@@ -22,7 +22,7 @@ class SchoologyClient {
     // Initialize key, secret, and base URL
     this.key = key;
     this.secret = secret;
-    this.baseURL = "https://api.schoology.com/v1";
+    this.baseURL = "https://api.schoology.com/v1/";
 
     // Initialize OAuth1 instance
     this.oauth = OAuth1({
