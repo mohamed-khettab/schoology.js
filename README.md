@@ -12,7 +12,7 @@ You can install the package via npm:
 
 ## Get Started
 
-```
+```js
 const SchoologyClient = require("schoology.js");
 
 // Replace "your_key" and "your_secret" with your actual key and secret. 
