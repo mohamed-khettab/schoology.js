@@ -1,13 +1,12 @@
 {
   "name": "schoology.js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Easily make requests to the Schoology API.",
   "main": "index.js",
   "dependencies": {
     "asynckit": "^0.4.0",
-    "axios": "^1.6.7",
+    "axios": "^1.7.7",
     "combined-stream": "^1.0.8",
-    "crypto": "^1.0.1",
     "delayed-stream": "^1.0.0",
     "follow-redirects": "^1.15.5",
     "form-data": "^4.0.0",
@@ -16,7 +15,6 @@
     "oauth-1.0a": "^2.2.6",
     "proxy-from-env": "^1.1.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
