@@ -69,9 +69,8 @@ class SchoologyClient {
 
       return response.data;
     } catch (error) {
-      const errorMessage = `Error while processing request: ${error.message}`;
-      console.error(errorMessage);
-      throw new Error(error); // Return the error object
+      // Re-throw the error so it can be handled by the caller
+      throw error;
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "schoology.js",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Easily make requests to the Schoology API.",
   "main": "index.js",
   "dependencies": {
