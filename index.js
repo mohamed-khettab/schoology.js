@@ -71,10 +71,9 @@ class SchoologyClient {
     } catch (error) {
       const errorMessage = `Error while processing request: ${error.message}`;
       console.error(errorMessage);
-      throw new Error(errorMessage);
+      throw new Error(error); // Return the error object
     }
   }
 }
 
 module.exports = SchoologyClient;
-  
